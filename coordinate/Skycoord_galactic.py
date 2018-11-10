@@ -1,46 +1,66 @@
-from matplotlib.patches import Ellipse
 import matplotlib.pyplot as plt
-from astropy.visualization import astropy_mpl_style
 from astropy.coordinates import SkyCoord
 from astropy import units as u
+import numpy as np
+from pylab import plot
 
 
 def dot(ra, dec, color='k'):
 	plt.gca()
 	c = SkyCoord(ra, dec, frame='icrs').galactic
-	longitude = c.l.wrap_at(180 * u.deg).radian
-	dimensionality = c.b.radian
-	plt.plot(longitude, dimensionality, linestyle='none', marker=
-		'.', markersize=1, color=color)
+	plt.plot(c.l.wrap_at(180 * u.deg).radian, c.b.radian, linestyle='none', marker='.', markersize=1, color=color)
 
 
-def circle(ra, dec, ra_error, dec_error):
+def area(ra, dec, ra_error, dec_error, color='skyblue', name=None):
 	plt.gca()
-	c = SkyCoord(ra, dec, frame='icrs').galactic
-	longitude = c.l.wrap_at(180 * u.deg).radian
-	dimensionality = c.b.radian	
+	theta = np.arange(0, 2*np.pi, np.pi/50)
+	c = SkyCoord(ra, dec, frame='icrs')
 	c_error = SkyCoord(ra_error, dec_error, frame='icrs')
-	print(c_error.to_string('decimal'))
-	longitude_error = c_error.ra.radian
-	dimensionality_error = c_error.dec.radian
-	print(longitude_error, dimensionality_error)
-	ell = Ellipse(xy=(longitude, dimensionality), width=longitude_error * 2, height=dimensionality_error * 2, angle=0.0, facecolor='blue', alpha=0.3)
-	ax.add_patch(ell)
+	x0 = c.ra.wrap_at(180*u.deg).degree
+	y0 = c.dec.degree
+	radio = np.linspace(0, 1, 100)
+	for r in radio:
+		a = r * c_error.ra.degree
+		b = r * c_error.dec.degree
+		x = x0 + a * np.cos(theta)
+		y = y0 + b * np.sin(theta)
+		g = SkyCoord(x, y, frame='icrs', unit='deg').galactic
+		plt.plot(g.l.wrap_at(180 * u.deg).radian, g.b.radian, linestyle='none', marker='.', markersize=0.01, color=color, alpha=0.5)
+	if name is not None:
+		g0 = SkyCoord(x0, y0, frame='icrs', unit='deg').galactic
+		plt.text(g0.l.wrap_at(180 * u.deg).radian, g0.b.radian, name, size=2)
+
+
+def circle(ra, dec, ra_error, dec_error, color='r', name=None):
+	plt.gca()
+	theta = np.arange(0, 2*np.pi, np.pi/100)
+	c = SkyCoord(ra, dec, frame='icrs')
+	c_error = SkyCoord(ra_error, dec_error, frame='icrs')
+	x0 = c.ra.wrap_at(180*u.deg).degree
+	y0 = c.dec.degree
+	a = c_error.ra.degree
+	b = c_error.dec.degree
+	x = x0 + a * np.cos(theta)
+	y = y0 + b * np.sin(theta)
+	g = SkyCoord(x, y, frame='icrs', unit='deg').galactic
+	# plt.plot(g.l.wrap_at(180 * u.deg).radian, g.b.radian, marker='*', markersize=0.01, color=color)
+	plot(g.l.wrap_at(180 * u.deg).radian, g.b.radian, color='red', linewidth=0.3, linestyle='-')
+	if name is not None:
+		g0 = SkyCoord(x0, y0, frame='icrs', unit='deg').galactic
+		plt.text(g0.l.wrap_at(180 * u.deg).radian, g0.b.radian, name, size=2)
 
 
 if __name__ == '__main__':
 	fig, ax = plt.subplots(figsize=(8, 5), subplot_kw={'projection': 'aitoff'})
 	ax.set_title("Galactic")
 	ax.grid()
-	
-	circle('17h34m', '-21.5d', '0h20m', '1.5d')
-	dot('17h34m', '-21.5d')
-	dot('17h54m', '-21.5d')
-	dot('17h14m', '-21.5d')
-	dot('17h34m', '-23d')
-	dot('17h34m', '-20d')
-	dot('17h54m', '-23d')
-	dot('17h54m', '-20d')
-	dot('17h14m', '-23d')
-	dot('17h14m', '-20d')
+	plt.tick_params(labelsize=4)
+
+	area('18h35.5m', '-34.1d', '0h0.2m', '0.1d')
+	# dot('10h0m', '-5d')
+	# dot('17h54m', '-21.5d')
+	# dot('17h14m', '-21.5d')
+	# dot('17h34m', '-23d')
+	# dot('17h34m', '-20d')
+
 	plt.show()
