@@ -44,10 +44,10 @@ def circle(ra, dec, ra_error, dec_error, color='r', name=None):
 	y = y0 + b * np.sin(theta)
 	g = SkyCoord(x, y, frame='icrs', unit='deg').galactic
 	# plt.plot(g.l.wrap_at(180 * u.deg).radian, g.b.radian, marker='*', markersize=0.01, color=color)
-	plot(g.l.wrap_at(180 * u.deg).radian, g.b.radian, color='red', linewidth=0.3, linestyle='-')
+	plot(g.l.wrap_at(180 * u.deg).radian, g.b.radian, color=color, linewidth=0.3, linestyle='-')
 	if name is not None:
 		g0 = SkyCoord(x0, y0, frame='icrs', unit='deg').galactic
-		plt.text(g0.l.wrap_at(180 * u.deg).radian, g0.b.radian, name, size=2)
+		plt.text(g0.l.wrap_at(180 * u.deg).radian + 0.03, g0.b.radian + 0.03, name, size=4)
 
 
 if __name__ == '__main__':
