@@ -45,13 +45,14 @@ def circle(ra, dec, ra_error, dec_error, color='r'):
 
 
 if __name__ == '__main__':
-	fig, ax = plt.subplots(figsize=(8, 5), subplot_kw={'projection': 'aitoff'})
-	ax.set_title("ICRS")
-	ax.set_xticklabels(['14h', '16h', '18h', '20h', '22h', '0h', '2h', '4h', '6h', '8h', '10h'])
-	ax.grid()
+#	fig, ax = plt.subplots(figsize=(8, 5), subplot_kw={'projection': 'aitoff'})
+#	ax.set_title("ICRS")
+#	ax.set_xticklabels(['14h', '16h', '18h', '20h', '22h', '0h', '2h', '4h', '6h', '8h', '10h'])
+#	ax.grid()
 	
-	area('17h34m', '-21.5d', '0h20m', '1.5d')
-	circle('17h34m', '-21.5d', '0h20m', '1.5d')
+#	area('17h34m', '-21.5d', '0h20m', '1.5d')
+#	circle('17h34m', '-21.5d', '0h20m', '1.5d')
+	Galactic_area('17h34m', '-21.5d', '0h20m', '1.5d')
 	# dot('17h34m', '-21.5d')
 	# dot('17h54m', '-21.5d')
 	# dot('17h14m', '-21.5d')

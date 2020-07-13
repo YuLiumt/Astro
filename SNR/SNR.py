@@ -29,9 +29,9 @@ class SNR:
         return y
 
 if __name__ == '__main__':
-    # r = radius(9, 3)
-    # print(r)
-    # G = SNR(10 ** 49, 0.01, r)
-    # print(G.year())
-    h = h(6.2, 15)
-    print(h)
+     r = radius(9, 6)
+     print(r)
+     G = SNR(10 ** 50, 0.001, r)
+     print(G.year())
+#    h = h(6.2, 15)
+#    print(h)
